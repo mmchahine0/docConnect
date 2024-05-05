@@ -171,8 +171,8 @@ const UserProfile = ({
     <div className="profile-container">
       <h2>User Profile</h2>
       <div className="profile-info">
-        <label>Full Name:</label>
-        <span>{`${fullName} (${userId})`}</span>
+        <label style={{marginTop:"10px"}}>Full Name:</label>
+        <span>{`${fullName}`}</span><span style={{color:"gray"}}> {`(${userId})`}</span>
       </div>
       <div className="profile-info">
         <label>Email:</label>
@@ -213,27 +213,27 @@ const UserProfile = ({
         <label>Critical Conditions:</label>
         <textarea value={newCriticalConditions || ''} onChange={handleCriticalConditionsChange} />
       </div>
-      <div className="profile-info">
-        <h3>Medical Records</h3>
+      <button className="profile-a" onClick={handleUpdateSurveys}>Update Survey</button>
+      <div className="profile-info" style={{marginTop:"10px",flexDirection:"column",display:"flex",  justifyContent:"center",alignItems:"center"}}>
+        <h3 style={{marginLeft:"-60px",fontSize: '24px'}}>Medical Records</h3>
         {medicalRecords ? (
           <ul>
             <li key={medicalRecords._id}>
-              <strong>Diagnosis:</strong> {newDiagnosis || 'N/A'}<br />
-              <strong>Medications:</strong> {newMedications || 'N/A'}<br />
-              <strong>Lab Reports:</strong> {newLabReports || 'N/A'}<br />
-              <strong>Prescriptions:</strong> {newPrescriptions || 'N/A'}<br />
-              <strong>Additional Notes:</strong> {newAdditionalNotes || 'N/A'}<br />
+              <strong style={{fontSize: '24px'}}>Diagnosis: {newDiagnosis || 'N/A'}</strong> <br />
+              <strong style={{fontSize: '24px'}}>Medications: {newMedications || 'N/A'} </strong><br />
+              <strong style={{fontSize: '24px'}}>Lab Reports: {newLabReports || 'N/A'}</strong><br />
+              <strong style={{fontSize: '24px'}}>Prescriptions: {newPrescriptions || 'N/A'}</strong><br />
+              <strong style={{fontSize: '24px'}}>Additional Notes: {newAdditionalNotes || 'N/A'}</strong><br />
             </li>
           </ul>
         ) : (
           <p>No medical records found.</p>
         )}
       </div>
-      <button className="profile-a" onClick={handleUpdateSurveys}>Update Survey</button>
       <div className="profile-info">
         <button className="profile-a" onClick={handleUpdatePasswordClick}>Change Password</button>
       </div>
-
+      
       {showChangePasswordModal && (
         <div className="modal">
           <div className="modal-content">

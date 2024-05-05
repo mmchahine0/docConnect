@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import "../styles/doctorProfile.css";
 
 const DoctorProfile = ({userId}) => {
 
   const [doctorInfo, setDoctorInfo] = useState({});
   const [doctorEmail, setDoctorEmail] = useState("");
   const [officeHours, setOfficeHours] = useState([]);
-
+  
 
   useEffect(() => {
     axios

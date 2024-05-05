@@ -83,7 +83,6 @@ const UpdatePassword = () => {
   const [userId, setUserId] = useState('');
 
   useEffect(() => {
-    // Fetch the user ID of the logged-in user
     const fetchUserId = async () => {
       try {
         const response = await axios.get('http://127.0.0.1:3500/user/ownUser');
@@ -644,8 +643,6 @@ const AdminPage = () => {
 
     <AllDoctorAppointments/>
 
-    <UpdatePassword/>
-
     <DoctorProfileImageUpload/>
 
     <SpecialtyUpdateForm/>
@@ -656,11 +653,19 @@ const AdminPage = () => {
 
     <CreateOrUpdateMedicalRecord/>
 
+    <UpdatePassword/>
+
     <MakeDoctorRequest/>
 
     <div className="containerUpdate">
     <h2 style={{padding:"10px"}} className="labelUpdate">Check all users</h2>
-    <a className="buttonUpdateUpdate" href="/usersList">go to all Users</a>
+    <button
+  style={{ textAlign: "center" }}
+  className="buttonUpdateUpdate"
+  onClick={() => { window.location.href = "/usersList"; }}
+>
+  Go to all Users
+</button>
     </div>
     <Footer/>
     </>

@@ -31,7 +31,7 @@ const DoctorList = () => {
     <>
       <Navbar />
 
-      <div className="doctor-list">
+      <div className="doctor-list" style={{minHeight:"65vh"}}>
         <h1>Available Doctors</h1>
         <ul>
           {doctors.length > 0 ? (

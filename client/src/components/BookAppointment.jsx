@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import moment from 'moment';
 import "../styles/BookAppointmentStyles.css";
 
 const BookAppointment = ({ doctorId }) => {
@@ -9,6 +12,7 @@ const BookAppointment = ({ doctorId }) => {
   const [doctor, setDoctor] = useState({});
   const [appointmentDate, setAppointmentDate] = useState(new Date());
   const [doctorEmail, setDoctorEmail] = useState("");       
+  const [officeHours, setOfficeHours] = useState([]);
 
   useEffect(() => {
     const fetchDoctorInfo = async () => {
@@ -24,16 +28,24 @@ const BookAppointment = ({ doctorId }) => {
     fetchDoctorInfo();
   }, [DocId]);
 
+  useEffect(() => {
+    axios
+      .get(`http://127.0.0.1:3500/doctor/getOffice/${DocId}`)
+      .then((response) => {
+        setOfficeHours(response.data.officeHours);
+        console.log(response.data.officeHours)
+      })
+      .catch((error) => {
+        console.error("Error fetching office hours:", error);
+      });
+  }, [DocId]);
+
   const handleBookAppointment = async (e) => {
     e.preventDefault();
 
-    const formattedAppointmentDate = `${appointmentDate.getFullYear()}-${
-      String(appointmentDate.getMonth() + 1).padStart(2, '0')
-    }-${String(appointmentDate.getDate()).padStart(2, '0')}T${String(
-      appointmentDate.getHours()
-    ).padStart(2, '0')}:${String(appointmentDate.getMinutes()).padStart(2, '0')}`;
-  
     try {
+      const formattedAppointmentDate = moment(appointmentDate).format('YYYY-MM-DDTHH:mm:ss');
+
       const response = await axios.post("http://127.0.0.1:3500/appointment/book", {
         doctorId: DocId,
         appointmentDate: formattedAppointmentDate
@@ -47,7 +59,7 @@ const BookAppointment = ({ doctorId }) => {
   };
 
   return (
-    <div className="book-appointment-container">
+    <div className="book-appointment-container" style={{minHeight:"65vh"}}>
       {doctor && (
         <>
           <h2>Book Appointment</h2>
@@ -57,11 +69,26 @@ const BookAppointment = ({ doctorId }) => {
             <p className="profile-p">Specialty: {doctor.specialty}</p>
             <p className="profile-p">Email: {doctorEmail}</p>
           </div>
+          <div>
+            <p className="profile-p">Office Hours:</p>
+            <ul>
+              {officeHours.map((officeHour, index) => (
+                <li className="profile-p" key={index}>
+                  <p className="profile-p">Day: {officeHour.day}</p>
+                  <p className="profile-p">Start Time: {officeHour.startTime}</p>
+                  <p className="profile-p">End Time: {officeHour.endTime}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
           <form onSubmit={handleBookAppointment}>
-            <input
-              type="datetime-local"
-              value={appointmentDate.toISOString().slice(0, 16)}
-              onChange={(e) => setAppointmentDate(new Date(e.target.value))}
+            <DatePicker
+              selected={appointmentDate}
+              onChange={date => setAppointmentDate(date)}
+              showTimeSelect
+              timeFormat="HH:mm"
+              timeIntervals={15}
+              dateFormat="MMMM d, yyyy h:mm aa"
             />
             <button type="submit">Book Appointment</button>
           </form>

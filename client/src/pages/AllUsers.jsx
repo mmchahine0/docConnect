@@ -38,7 +38,7 @@ const AllUsers = () => {
   return (
     <>
       <Navbar />
-      <div className="containerUser">
+      <div className="containerUser" style={{minHeight:"65vh"}}>
         <h2 className="h2User">All Users</h2>
         <input
           type="text"
