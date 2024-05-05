@@ -1,0 +1,80 @@
+.containerHome {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start; 
+  padding: 20px;
+}
+.firstColumnHome {
+  text-align: left;
+  margin-left: 10%;
+  margin-bottom: 20px;
+}
+.secondColumnHome {
+  text-align: right;
+  margin-right: 10%;
+  margin-bottom: 20px;
+}
+.circleColumnHome {
+  text-align: center;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+.column-textHome {
+  margin-top: 10px;
+}
+
+.buttonHome {
+  position: absolute;
+  bottom: 10%; 
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  background-color: #5E97D1; 
+  color: white; 
+  border: 1px solid;
+  font-weight: 600;
+}
+.buttonHome:hover {
+  background-color: #0492c2; 
+  transition: 0.3s ease-in-out;
+}
+
+.image-container {
+  margin-top: 10px;
+  position: relative;
+  display: inline-block;
+}
+
+.image-container img {
+  width: 60%; 
+  height: auto;
+  border-radius: 8px; 
+}
+
+.column-textHome1 {
+  position: absolute;
+  top: 30%;
+  left: 10%;
+  transform: translateY(-50%);
+  color: white; 
+  font-size: 18px; 
+  background: rgb(94, 151, 209,0.3);
+  letter-spacing: 1px;
+  font-weight: 500; 
+  font-family: 'Arial', sans-serif; 
+  padding: 10px 20px; 
+}
+.column-textHome2 {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translateY(-50%);
+  color: white; 
+  font-size: 18px; 
+  background: rgb(94, 151, 209,0.3);
+  letter-spacing: 1px;
+  font-weight: 500; 
+  font-family: 'Arial', sans-serif; 
+  padding: 10px 20px; 
+}
