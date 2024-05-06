@@ -84,7 +84,7 @@ exports.getSpeciality = async (req, res) => {
   try {
     const receivedSpecialty = req.params.specialty;
 
-    const doctorsWithSpecialty = await User.find({ specialty: receivedSpecialty });
+    const doctorsWithSpecialty = await User.find({ specialty: receivedSpecialty, role: "doctor" });
 
     if (!doctorsWithSpecialty || doctorsWithSpecialty.length === 0) {
       return res.status(404).json({ message: 'No doctors found with the specified specialty' });

@@ -23,7 +23,6 @@ const ChooseSickness = () => {
   ];
 
   const handleSpecialtyClick = (specialty) => {
-    console.log(`Specialty clicked: ${specialty}`);
     setSelectedSpecialty(specialty);
     fetchDoctorsForSpecialty(specialty);
   };
@@ -34,7 +33,7 @@ const ChooseSickness = () => {
       console.log(`Doctors for ${specialty}:`, response.data);
       setDoctors(response.data.data); 
       console.log(response.data.data)
-      console.log(typeof response.data.data)
+  
     } catch (error) {
       console.error('Error fetching doctors:', error);
       setDoctors([]); 
@@ -49,7 +48,7 @@ const ChooseSickness = () => {
   return (
     <>
       <Navbar />
-      <div style={{ width: '80%', margin: '0 auto' }}>
+      <div style={{ width: '80%', margin: '0 auto', minHeight:"61vh"}}>
         <h2 style={{ padding: '10px', borderLeft: '#022d36 solid' }}>Choose your intended Specialty: </h2>
         <div className="specialty-buttons" style={{minHeight:"46vh"}}>
           {specialties.map((specialty, index) => (

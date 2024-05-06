@@ -33,7 +33,6 @@ const BookAppointment = ({ doctorId }) => {
       .get(`http://127.0.0.1:3500/doctor/getOffice/${DocId}`)
       .then((response) => {
         setOfficeHours(response.data.officeHours);
-        console.log(response.data.officeHours)
       })
       .catch((error) => {
         console.error("Error fetching office hours:", error);
@@ -53,8 +52,8 @@ const BookAppointment = ({ doctorId }) => {
       console.log("Appointment booked successfully:", response.data);
       toast.success("Appointment booked successfully!");
     } catch (error) {
-      console.error("Error booking appointment:", error);
-      toast.error("Error booking appointment, try another date.");
+      console.error("Error booking appointment:", error.response.data.message);
+      toast.error(error.response.data.message || "Error booking appointment, try another date.");
     }
   };
 
@@ -64,10 +63,10 @@ const BookAppointment = ({ doctorId }) => {
         <>
           <h2>Book Appointment</h2>
           <div className="doctor-info">
-            <img className="profile-image" src={doctor.image} alt={doctor.fullname} />
-            <p className="profile-p">You're making an appointment with doctor: <p className="profile-p" style={{fontWeight:"bold"}}>{doctor.fullname}</p></p>
-            <p className="profile-p">Specialty: {doctor.specialty}</p>
-            <p className="profile-p">Email: {doctorEmail}</p>
+            <img style={{marginRight:"20px"}} className="profile-image" src={doctor.image} alt={doctor.fullname} />
+            <p className="profile-p">an appointment with doctor: <p className="profile-p" style={{fontWeight:"bold"}}>{doctor.fullname}</p></p>
+            <p className="profile-p">Specialty: <p style={{fontWeight:"bold", marginTop:"25px"}}>{doctor.specialty}</p></p>
+            <p className="profile-p">Email: <p style={{fontWeight:"bold",marginTop:"25px"}}>{doctorEmail}</p></p>
           </div>
           <div>
             <p className="profile-p">Office Hours:</p>
@@ -81,7 +80,8 @@ const BookAppointment = ({ doctorId }) => {
               ))}
             </ul>
           </div>
-          <form onSubmit={handleBookAppointment}>
+          <form style={{marginLeft:"0px"}} onSubmit={handleBookAppointment}>
+            <p style={{fontWeight:"bold",marginTop:"25px",marginBottom:"20px"}}>Pick a date:</p>
             <DatePicker
               selected={appointmentDate}
               onChange={date => setAppointmentDate(date)}
@@ -90,7 +90,8 @@ const BookAppointment = ({ doctorId }) => {
               timeIntervals={15}
               dateFormat="MMMM d, yyyy h:mm aa"
             />
-            <button type="submit">Book Appointment</button>
+            <br/>
+            <button style={{margin:"20px"}}type="submit">Book Appointment</button>
           </form>
         </>
       )}

@@ -34,7 +34,6 @@ const appointmentSchema = new mongoose.Schema(
 );
 
 appointmentSchema.pre('save', function (next) {
-  // Calculate the expiration time as the date plus one day
   const expirationTime = new Date(this.date);
   expirationTime.setDate(expirationTime.getDate() + 1);
 

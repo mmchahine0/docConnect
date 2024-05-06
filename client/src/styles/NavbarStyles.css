@@ -19,6 +19,8 @@
   list-style: none;
   padding: 0 20px;
   position: relative;
+  margin-top: 10px;
+
 }
 
 #navbar li a, #navbar li button {

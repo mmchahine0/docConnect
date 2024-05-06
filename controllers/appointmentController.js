@@ -7,28 +7,21 @@ exports.bookAppointment = async (req, res) => {
     const { doctorId, appointmentDate } = req.body;
     const patientId = req.user._id;
 
-
     const doctor = await User.findById(doctorId);
     const patient = await User.findById(patientId);
-
 
     if (!doctor || !patient) {
       return res.status(404).json({ message: "Doctor or patient not found" });
     }
 
-    if (!moment(appointmentDate).isValid()) {
+    if (!moment(appointmentDate, 'YYYY-MM-DDTHH:mm').isValid()) {
       return res.status(400).json({ message: "Invalid appointment date format" });
     }
 
-    const existingAppointment = await Appointment.findOne({ doctor: doctorId, appointmentDate });
+    const selectedAppointmentTime = moment(appointmentDate);
 
-    if (existingAppointment) {
-      return res.status(409).json({ message: "Appointment slot already booked" });
-    }
-
-    const dayOfWeek = moment(appointmentDate).format('ddd').toLowerCase();
-    const selectedTime = moment(appointmentDate).format('HH:mm');
-
+    const dayOfWeek = selectedAppointmentTime.format('ddd').toLowerCase();
+    const selectedTime = selectedAppointmentTime.format('HH:mm');
     let isAvailable = false;
 
     for (const officeHour of doctor.officeHours) {
@@ -47,15 +40,23 @@ exports.bookAppointment = async (req, res) => {
     }
 
     if (!isAvailable) {
-      return res.status(400).json({ message: `Dr. ${doctor.fullname} is not available at the selected time. Please check doctor office hour at Dr. ${doctor.fullname}'s Profile` });
+      return res.status(400).json({ message: `Dr. ${doctor.fullname} is not available at the selected time. Please check doctor's office hours.` });
     }
-    const selectedAppointmentTime = moment(appointmentDate);
 
+    const existingAppointmentSameDoctor = await Appointment.findOne({
+      doctor: doctorId,
+      user: patientId,
+    });
+
+    if (existingAppointmentSameDoctor) {
+      return res.status(400).json({ message: 'You already have an appointment with this doctor.' });
+    }
     const existingAppointmentWithin1Hour = await Appointment.findOne({
       doctor: doctorId,
-      appointmentDate: {
-        $gte: selectedAppointmentTime.clone().subtract(1, 'hour').toDate(),
-        $lt: selectedAppointmentTime.clone().add(1, 'hour').toDate(),
+      date: selectedAppointmentTime.format('YYYY-MM-DD'),
+      time: {
+        $gte: selectedAppointmentTime.clone().subtract(1, 'hour').format('HH:mm'),
+        $lt: selectedAppointmentTime.clone().add(1, 'hour').format('HH:mm'),
       },
     });
 
@@ -65,20 +66,21 @@ exports.bookAppointment = async (req, res) => {
 
     const appointmentData = {
       time: selectedTime,
-      date: moment(appointmentDate).format('YYYY-MM-DD'),
+      date: selectedAppointmentTime.format('YYYY-MM-DD'),
       user: patientId,
-      doctor: doctorId
-
+      doctor: doctorId,
     };
 
     const appointment = await Appointment.create(appointmentData);
 
     return res.status(201).json({ message: "Appointment booked successfully", data: appointment });
   } catch (err) {
-    console.log(err);
-    return res.status(500).json({ message: "Something went wrong during the booking process, Please try again later." });
+    console.error(err);
+    return res.status(500).json({ message: "Something went wrong during the booking process. Please try again later." });
   }
 };
+
+
 
 exports.cancelAppointment = async (req, res) => {
   try {
@@ -114,3 +116,6 @@ exports.getAppointments = async (req, res) => {
     return res.status(500).json({ message: "Something went wrong while fetching appointments." });
   }
 };
+
+
+
