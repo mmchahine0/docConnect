@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
@@ -11,7 +12,7 @@ const AllAppointment = () => {
   const { userId } = useParams();
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const appointmentRoute = `/chooseSickness`;
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
@@ -55,8 +56,9 @@ const AllAppointment = () => {
       <div id="appointments-container" style={{ minHeight: "57vh" }}>
         <h2 style={{ padding: "10px" }}>Your Appointments:</h2>
         {loading ? (
-          <p>Loading appointments...</p>
+          <p>Loading appointments...</p>         
         ) : (
+          <>
           <ul style={{ padding: "5px", margin: "10px" }} id="appointments-list">
             {appointments.length > 0 ? (
               appointments.map((appointment) => (
@@ -75,9 +77,13 @@ const AllAppointment = () => {
             ) : (
               <p>No appointments found.</p>
             )}
-          </ul>
-        )}
+          </ul> 
+    
+          </>)}
       </div>
+      <nav className="profile-a" style={{marginLeft:"80%",marginBottom:"20px", fontSize:"20px"}}>
+          <Link to={appointmentRoute}>Make an Appointment</Link> 
+          </nav>
       <Footer />
       <ToastContainer />
     </>

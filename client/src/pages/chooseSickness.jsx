@@ -51,18 +51,21 @@ const ChooseSickness = () => {
       <div style={{ width: '80%', margin: '0 auto', minHeight:"61vh"}}>
         <h2 style={{ padding: '10px', borderLeft: '#022d36 solid' }}>Choose your intended Specialty: </h2>
         <div className="specialty-buttons" style={{minHeight:"46vh"}}>
-          {specialties.map((specialty, index) => (
-            <button
-              key={index}
-              onClick={() => handleSpecialtyClick(specialty)}
-              className="specialty-button"
-            >
-              {specialty}
-            </button>
-          ))}
-        </div>
+        {specialties.map((specialty, index) => (
+  <div key={index}>
+    <button
+      onClick={() => handleSpecialtyClick(specialty)}
+      className={`specialty-button ${specialty.replace(/\s+/g, '')}`} 
+    > 
+    </button>
+    <strong style={{marginLeft:"30%"}}>{specialty}</strong>
+  </div>
+))}
+</div>
+
+
         {selectedSpecialty && (
-          <div>
+          <div style={{marginTop:"20px"}}>
             <h2 style={{ padding: '10px', borderLeft: '#022d36 solid' }}>Doctors for {selectedSpecialty}:</h2>
             {doctors !== null ? (
               <ul>
@@ -70,7 +73,7 @@ const ChooseSickness = () => {
                   <li style={{ padding: '10px' }} key={index}>
                     <img className="profile-image" src={doctor.image} alt={doctor.fullname} /> <br />
                     <strong>Name:</strong> {doctor.fullname}, <strong>Email:</strong> {doctor.email}, <strong>Specialty:</strong> {doctor.specialty} <br/>
-                    <button className="visit-button" onClick={() => handleVisit(doctor._id)}>Visit</button>
+                    <button style={{marginTop:"10px"}} className="visit-button" onClick={() => handleVisit(doctor._id)}>Visit</button>
                   </li>
                 ))}
               </ul>

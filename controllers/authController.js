@@ -88,7 +88,9 @@ exports.makeDoctor = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-
+    if (user.role === "doctor") {
+      return res.status(400).json({ message: "User is already a doctor" });
+    }
     user.role = "doctor";
 
     await user.save();

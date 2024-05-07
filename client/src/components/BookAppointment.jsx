@@ -6,6 +6,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 import "../styles/BookAppointmentStyles.css";
+import { useNavigate } from "react-router-dom";
 
 const BookAppointment = ({ doctorId }) => {
   const DocId = doctorId.doctorIdString;
@@ -13,6 +14,18 @@ const BookAppointment = ({ doctorId }) => {
   const [appointmentDate, setAppointmentDate] = useState(new Date());
   const [doctorEmail, setDoctorEmail] = useState("");       
   const [officeHours, setOfficeHours] = useState([]);
+  const navigate = useNavigate();
+  const [userId, setUserId] = useState(''); 
+
+  useEffect(() => {
+    axios.get('http://127.0.0.1:3500/user/ownUser')
+      .then((response) => {
+        setUserId(response.data.user._id);
+      })
+      .catch((error) => {
+        console.error('Error fetching user role:', error);
+      });
+  }, []);
 
   useEffect(() => {
     const fetchDoctorInfo = async () => {
@@ -51,6 +64,9 @@ const BookAppointment = ({ doctorId }) => {
       });
       console.log("Appointment booked successfully:", response.data);
       toast.success("Appointment booked successfully!");
+      setTimeout(() => {
+        navigate(`/appointments/${userId}`, { replace: true });
+      }, 2000);
     } catch (error) {
       console.error("Error booking appointment:", error.response.data.message);
       toast.error(error.response.data.message || "Error booking appointment, try another date.");
@@ -69,7 +85,7 @@ const BookAppointment = ({ doctorId }) => {
             <p className="profile-p">Email: <p style={{fontWeight:"bold",marginTop:"25px"}}>{doctorEmail}</p></p>
           </div>
           <div>
-            <p className="profile-p">Office Hours:</p>
+            <p className="profile-p">Available only on:</p>
             <ul>
               {officeHours.map((officeHour, index) => (
                 <li className="profile-p" key={index}>

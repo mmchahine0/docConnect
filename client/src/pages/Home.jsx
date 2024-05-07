@@ -39,7 +39,7 @@ const Home = () => {
           <p style={{ paddingTop: '5px', textAlign:"left" }}>Schedule medical appointments easily.</p>
           <p style={{ paddingTop: '5px', textAlign:"left" }}>Connect with trusted healthcare</p>
           <p style={{ paddingTop: '5px', textAlign:"left" }}>providers and prioritize your well-being.</p></div>
-          <button onClick={() => handleClick("/chooseSickness")} className="buttonHome">Make an Appointment</button>
+          <button onClick={() => handleClick("/chooseSickness")} className="buttonHome" style={{fontSize:"18px", marginLeft:"-345px"}}>Make an Appointment</button>
 
         </div>
     </div>
@@ -52,7 +52,7 @@ const Home = () => {
           <p style={{ paddingTop: '5px', textAlign:"left" }}>Discover expertise and book appointments</p>
           <p style={{ paddingTop: '5px', textAlign:"left" }}> with trusted healthcare professionals tailored to your needs.</p>
           </div>
-          <button onClick={() => handleClick("/doctorList")} className="buttonHome">Check out our Doctors</button>
+          <button onClick={() => handleClick("/doctorList")} className="buttonHome" style={{fontSize:"18px", marginLeft:"350px"}}>Check out our Doctors</button>
 
         </div>
       </div>
@@ -62,9 +62,8 @@ const Home = () => {
           <div className="image-container" style={{}}>
             <img src={amindimg} alt="Hospital Image" />
             <div className="column-textHome1" style={{ borderRight: '3px solid #022d36' }}>
-              <p style={{ paddingTop: '5px' }}>Access your Doctor privileges here.</p>
+              <p style={{ paddingTop: '5px' }}>Access your privileges here.</p>
             </div>
-        
             <button onClick={() => handleClick("/adminPage")} className="buttonHome">Press here</button>
 
           </div>

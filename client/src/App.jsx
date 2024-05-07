@@ -14,6 +14,7 @@ import AdminPage from './pages/adminPage';
 import AllUsers from './pages/AllUsers'
 import NotFound from './pages/notFound';
 import AllAppointment from './pages/AllAppointments';
+import AboutUs from "./pages/aboutUs";
 
 //components
 import Layout from './components/Layout';
@@ -47,6 +48,10 @@ function App() {
               path="/home"
               element={<Home />}
               />
+              <Route
+            path="/aboutUs"
+            element={<AboutUs />}
+            />
               <Route
               path="/appointment/:doctorIdString"
               element={<Appointment />}

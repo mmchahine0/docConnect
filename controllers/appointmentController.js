@@ -20,8 +20,18 @@ exports.bookAppointment = async (req, res) => {
 
     const selectedAppointmentTime = moment(appointmentDate);
 
+    if (selectedAppointmentTime.isBefore(moment(), 'day')) {
+      return res.status(400).json({ message: "Cannot book appointments for past days" });
+    }
+
+    const maxFutureDate = moment().add(2, 'months');
+    if (selectedAppointmentTime.isAfter(maxFutureDate, 'day')) {
+      return res.status(400).json({ message: "Cannot book appointments too far in the future" });
+    }
+
     const dayOfWeek = selectedAppointmentTime.format('ddd').toLowerCase();
     const selectedTime = selectedAppointmentTime.format('HH:mm');
+    const expiryDate = moment(selectedAppointmentTime).add(1, 'hour');
     let isAvailable = false;
 
     for (const officeHour of doctor.officeHours) {
@@ -69,6 +79,7 @@ exports.bookAppointment = async (req, res) => {
       date: selectedAppointmentTime.format('YYYY-MM-DD'),
       user: patientId,
       doctor: doctorId,
+      expiry: expiryDate.toDate(),
     };
 
     const appointment = await Appointment.create(appointmentData);
@@ -79,6 +90,7 @@ exports.bookAppointment = async (req, res) => {
     return res.status(500).json({ message: "Something went wrong during the booking process. Please try again later." });
   }
 };
+
 
 
 

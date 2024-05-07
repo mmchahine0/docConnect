@@ -29,18 +29,18 @@ const Navbar = () => {
     <>
       <nav className="navbar">
         <a href="/home">
-          <img src={logo} alt="DocConnect" style={{ width: "220px", height: "47px" }} />
+          <img src={logo} alt="DocConnect" style={{ width: "210px", height: "42px" }} />
         </a>
         <div>
           <ul id="navbar" >
-            <li><a href="/home">Home</a></li>
+            <li style={{border:"none"}}><a href="/home">Home</a></li>
             {userRole === "user" && (
               <>
-                <li><Link to={`/patientProfile/${userId}`}>Profile</Link></li> 
-                <li><Link to={`/appointments/${userId}`}>Appointments</Link></li>  
+                <li style={{border:"none"}}><Link to={`/patientProfile/${userId}`}>Profile</Link></li> 
+                <li style={{border:"none"}}><Link to={`/appointments/${userId}`}>Appointments</Link></li>  
               </>
             )}
-            <li><button onClick={handleClick}>Sign out</button></li>
+            <li style={{border:"none"}}><button onClick={handleClick}>Sign out</button></li>
           </ul>
         </div>
       </nav>

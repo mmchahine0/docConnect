@@ -28,7 +28,8 @@ const UserProfile = ({
   const [newPassword, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
-  
+  const [userRole, setUserRole] = useState('');
+    
 
   const handleSubmitPassword = async (e) => {
     e.preventDefault();
@@ -60,6 +61,17 @@ const UserProfile = ({
       }
     }
   };
+
+  useEffect(() => {
+    axios.get('http://127.0.0.1:3500/user/ownUser')
+      .then((response) => {
+        setUserRole(response.data.user.role);
+      })
+      .catch((error) => {
+        console.error('Error fetching user role:', error);
+      });
+  }, []);
+
   const handleUpdatePasswordClick = () => {
     setShowChangePasswordModal(true);
   };
@@ -181,7 +193,7 @@ const UserProfile = ({
       <div className="profile-info">
         <label>Date of Birth:</label>
         <span>{newDateOfBirth ? new Date(newDateOfBirth).toISOString().split('T')[0] : ''}</span>
-        <button style={{marginLeft:"5px"}} className="profile-a" onClick={handleUpdateDateOfBirthClick}>Change</button>
+        {userRole ==='user' &&(<button style={{marginLeft:"5px"}} className="profile-a" onClick={handleUpdateDateOfBirthClick}>Change</button>)}
       </div>
       {showUpdateDateOfBirthModal && (
         <div className="modal">
@@ -203,17 +215,17 @@ const UserProfile = ({
       )}
       <div className="profile-info">
         <label>Allergies:</label>
-        <textarea value={newAllergies || ''} onChange={handleAllergiesChange} />
+        <textarea value={newAllergies || ''} onChange={handleAllergiesChange} disabled={userRole === 'doctor'} />
       </div>
       <div className="profile-info">
         <label>Medical History:</label>
-        <textarea value={newMedicalHistory || ''} onChange={handleMedicalHistoryChange} />
+        <textarea value={newMedicalHistory || ''} onChange={handleMedicalHistoryChange} disabled={userRole === 'doctor'} />
       </div>
       <div className="profile-info">
         <label>Critical Conditions:</label>
-        <textarea value={newCriticalConditions || ''} onChange={handleCriticalConditionsChange} />
+        <textarea value={newCriticalConditions || ''} onChange={handleCriticalConditionsChange} disabled={userRole === 'doctor'} />
       </div>
-      <button className="profile-a" onClick={handleUpdateSurveys}>Update Survey</button>
+      {userRole ==='user' &&(<button className="profile-a" onClick={handleUpdateSurveys}>Update Survey</button>)}
       <div className="profile-info" style={{marginTop:"10px",flexDirection:"column",display:"flex",  justifyContent:"center",alignItems:"center"}}>
         <h3 style={{marginLeft:"-60px",fontSize: '24px'}}>Medical Records</h3>
         {medicalRecords ? (
@@ -231,7 +243,7 @@ const UserProfile = ({
         )}
       </div>
       <div className="profile-info">
-        <button className="profile-a" onClick={handleUpdatePasswordClick}>Change Password</button>
+      {userRole ==='user' &&(<button className="profile-a" onClick={handleUpdatePasswordClick}>Change Password</button>)}
       </div>
       
       {showChangePasswordModal && (

@@ -42,7 +42,7 @@ const DoctorProfile = ({userId}) => {
     <p className="profile-p">Specialty: {doctorInfo.specialty}</p>
     <p className="profile-p">Bio: {doctorInfo.bio}</p>
     <div>
-      <p className="profile-p">Office Hours:</p>
+      <p className="profile-p">Available only on:</p>
       <ul>
         {officeHours.map((officeHour, index) => (
           <li className="profile-p" key={index}>

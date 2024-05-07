@@ -20,9 +20,12 @@
   position: relative;
   overflow: hidden;
   text-align: center;
-  color: white; 
-  font-size: 16px; 
+  color: black; 
+  font-size: 16px;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
+
 .specialty-button:hover {
   transition: 0.3s ease-in-out;
   background-color: #2980b9;
@@ -40,3 +43,42 @@
   background-color: #1a5276;
 }
 
+.specialty-button.Cardiology {
+  background-image: url('../images/cardiology.jpg');
+}
+
+.specialty-button.Dermatology {
+  background-image: url('../images/dermatology.jpg');
+}
+
+.specialty-button.Endocrinology {
+  background-image: url('../images/endocrinology.jpg');
+}
+
+.specialty-button.Gastroenterology {
+  background-image: url('../images/gastroenterology.jpg');
+}
+
+.specialty-button.Neurology {
+  background-image: url('../images/neurology.jpg');
+}
+
+.specialty-button.Oncology {
+  background-image: url('../images/oncology.jpg');
+}
+
+.specialty-button.Orthopedics {
+  background-image: url('../images/orthopedic.jpg');
+}
+
+.specialty-button.Pediatrics {
+  background-image: url('../images/pediatrics.png');
+}
+
+.specialty-button.Psychiatry {
+  background-image: url('../images/psychiatry.png');
+}
+
+.specialty-button.Urology {
+  background-image: url('../images/urology.jpg');
+}

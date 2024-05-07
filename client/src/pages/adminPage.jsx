@@ -10,13 +10,14 @@ const AllDoctorAppointments = () => {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState('');
-  const [userRole, setUserRole] = useState('')
+  const [userRole, setUserRole] = useState('');
+
   useEffect(() => {
     axios
       .get('http://127.0.0.1:3500/user/ownUser')
       .then((response) => {
         setUserId(response.data.user._id);
-        setUserRole(response.data.user.role)
+        setUserRole(response.data.user.role);
       })
       .catch((error) => {
         console.error('Error fetching user role:', error);
@@ -24,18 +25,28 @@ const AllDoctorAppointments = () => {
   }, []);
 
   useEffect(() => {
-    const fetchDoctorAppointments = async () => {
+    const fetchAppointments = async () => {
       try {
         const response = await axios.get(`http://127.0.0.1:3500/appointment/get/${userId}`);
-        setAppointments(response.data.data);
+        const appointmentsData = response.data.data;
+        const appointmentsWithPatientInfo = await Promise.all(
+          appointmentsData.map(async (appointment) => {
+            const patientIdd = appointment.user;
+            const patientResponse = await axios.get(`http://127.0.0.1:3500/user/getUser/${patientIdd}`);
+            const patientName = patientResponse.data.user.fullname;
+            const patientId = patientResponse.data.user._id;
+            return { ...appointment, patientName, patientId };
+          })
+        );
+        setAppointments(appointmentsWithPatientInfo);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching doctor appointments:', error);
+        console.error('Error fetching appointments:', error);
         setLoading(false);
       }
     };
 
-    fetchDoctorAppointments();
+    fetchAppointments();
   }, [userId]);
 
   const handleCancelAppointment = async (appointmentId) => {
@@ -52,7 +63,7 @@ const AllDoctorAppointments = () => {
 
   return (
     <>{userRole === 'doctor' && (
-      <div id="appointments-container">
+      <div id="appointments-container" style={{width:"20%"}}>
         <h2 style={{padding:"10px"}}>Doctor's Appointments: </h2>
         {loading ? (
           <p>Loading appointments...</p>
@@ -60,10 +71,10 @@ const AllDoctorAppointments = () => {
           <ul style={{padding:"5px", margin:"10px"}} id="appointments-list">
             {appointments.map((appointment) => (
               <li key={appointment._id} className="appointment-item">
-                <div className="datetime">
-                  Date: {appointment.date}, Time: {appointment.time}
-                </div>
-                <button onClick={() => handleCancelAppointment(appointment._id)}>Cancel</button>
+                <div className="datetime" >
+                 <p >Date: {appointment.date} <br/>Time: {appointment.time} <br /> Patient Name: {appointment.patientName} <br /> ID: {appointment.patientId}</p> 
+                </div>             
+                <button className="cancel-button" onClick={() => handleCancelAppointment(appointment._id)}>Cancel</button>
               </li>
             ))}
           </ul>
@@ -74,6 +85,9 @@ const AllDoctorAppointments = () => {
     </>
   );
 };
+
+
+const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 const UpdatePassword = () => {
   const [oldPassword, setOldPassword] = useState('');
@@ -95,8 +109,17 @@ const UpdatePassword = () => {
     fetchUserId();
   }, []);
 
+  const validatePassword = (password) => {
+    return PASSWORD_REGEX.test(password);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validatePassword(password)) {
+      setMessage('Password must be between 8 to 24 characters and contain at least one uppercase letter, one lowercase letter, one number, and one special character.');
+      return;
+    }
 
     if (password !== confirmPassword) {
       setMessage('Passwords do not match');
@@ -198,22 +221,25 @@ const DoctorProfileImageUpload = () => {
         }
       });
 
+      toast.success('Profile image uploaded successfully');
       console.log('Profile image uploaded successfully:', response.data.imageUrl);
     } catch (error) {
       console.error('Error uploading profile image:', error);
+      toast.error('Error uploading profile image');
     }
   };
 
   return (
-    <>{userRole === 'doctor' && (
-    <div className="containerUpdate">
-      <h2> Upload your Profile picture</h2>
-      <div style={{padding:"5px",margin:"10px"}}>
-        <input style={{padding:"5px",margin:"10px"}} type="file" accept="image/*" onChange={handleImageChange} />
-        <button style={{padding:"5px",margin:"10px"}} onClick={handleImageUpload}>Upload Profile Image</button>
-      </div>
-    </div>
-    )}
+    <>
+      {userRole === 'doctor' && (
+        <div className="containerUpdate">
+          <h2> Upload your Profile picture</h2>
+          <div style={{ padding: "5px", margin: "10px" }}>
+            <input style={{ padding: "5px", margin: "10px" }} type="file" accept="image/*" onChange={handleImageChange} />
+            <button style={{ padding: "5px", margin: "10px" }} onClick={handleImageUpload}>Upload Profile Image</button>
+          </div>
+        </div>
+      )}
     </>
   );
 };
@@ -324,7 +350,7 @@ const SpecialtyUpdateForm = () => {
         `http://127.0.0.1:3500/doctor/specialty`,
         { specialty: selectedSpecialty },
       );
-    toast.success('Bio updated successfully');
+    toast.success('Specialty updated successfully');
 
     } catch (error) {
       console.error("Error updating specialty: ", error);
@@ -377,10 +403,10 @@ const UpdateOfficeHours = () => {
   }, []);
 
   const handleAddDay = () => {
-    if (newOfficeHours.length < 5) {
+    if (newOfficeHours.length < 7) {
       setNewOfficeHours([...newOfficeHours, { day: '', startTime: '', endTime: '' }]);
     } else {
-      toast.error('You cannot add more than 5 days per week');
+      toast.error('You cannot add more than 7 days per week');
     }
   };
 
@@ -581,7 +607,6 @@ const CreateOrUpdateMedicalRecord = () => {
 
 const MakeDoctorRequest = () => {
   const [userId, setUserId] = useState('');
-
   const [userRole, setUserRole] = useState('');
   
     useEffect(() => {
@@ -614,7 +639,7 @@ const MakeDoctorRequest = () => {
   return (
     <>
     {userRole === 'admin' && (
-      <div className="containerUpdate">
+      <div className="containerUpdate" style={{marginTop:"20px"}}>
         <h2 className="labelUpdate">Make User a Doctor</h2>
         <form onSubmit={handleSubmit}>
           <label className="labelUpdate">
@@ -643,6 +668,8 @@ const AdminPage = () => {
 
     <AllDoctorAppointments/>
 
+    <MakeDoctorRequest/>
+
     <DoctorProfileImageUpload/>
 
     <SpecialtyUpdateForm/>
@@ -655,9 +682,8 @@ const AdminPage = () => {
 
     <UpdatePassword/>
 
-    <MakeDoctorRequest/>
 
-    <div className="containerUpdate">
+    <div className="containerUpdate" style={{marginBottom:"20px"}}>
     <h2 style={{padding:"10px"}} className="labelUpdate">Check all users</h2>
     <button
   style={{ textAlign: "center" }}

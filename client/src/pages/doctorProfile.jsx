@@ -13,7 +13,7 @@ const DoctorProfile = () => {
     <>
       <Navbar />
       <DoctorProfileS userId={doctorIdString} />
-      <nav className="profile-a" style={{marginLeft:"60%",marginBottom:"20px"}}>
+      <nav className="profile-a" style={{marginLeft:"45%",marginBottom:"20px"}}>
         <Link to={appointmentRoute}>Make an Appointment</Link> <br/>
       </nav>
       <Footer />
