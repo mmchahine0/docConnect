@@ -26,7 +26,6 @@ const DoctorProfile = ({userId}) => {
         .get(`http://127.0.0.1:3500/doctor/getOffice/${userId}`)
         .then((response) => {
           setOfficeHours(response.data.officeHours);
-          console.log(response.data.officeHours)
         })
         .catch((error) => {
           console.error("Error fetching office hours:", error);

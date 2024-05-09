@@ -5,7 +5,6 @@ const User = require('../models/userModel.js');
 const multerStorage = multer.memoryStorage();
 
 const filter = (req, file, cb) => {
-  console.log(file.mimetype)
   if (file.mimetype.startsWith("image")) {
     cb(null, true);
   }
@@ -32,7 +31,6 @@ const uploadProfilePictureToS3 = async (file, userId) => {
 
     const imageUrl = await uploadToS3(params);
 
-    // Update the user's profile with the image URL
     await User.findByIdAndUpdate(userId, { image: imageUrl });
 
     return imageUrl;
