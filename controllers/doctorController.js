@@ -60,7 +60,8 @@ exports.chooseSpecialty = async (req, res) => {
   try {
     const doctorId = req.user._id;
 
-    const doctor = await User.findOne({ user: doctorId });
+    const doctor = await User.findById(doctorId);
+
     if (!doctor) {
       return res.status(404).json({ message: "Doctor not found" });
     }
