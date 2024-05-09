@@ -557,7 +557,7 @@ const CreateOrUpdateMedicalRecord = () => {
           className="textInputUpdate"
           id="diagnosis"
           value={diagnosis}
-          onChange={(e) => setDiagnosis(e.target.value)}
+          onChange={(e) => setDiagnosis(e.target.value || "N/A")}
           placeholder="Enter Diagnosis"
         />
       </div>
@@ -566,7 +566,7 @@ const CreateOrUpdateMedicalRecord = () => {
         <textarea
           id="medications"
           value={medications}
-          onChange={(e) => setMedications(e.target.value)}
+          onChange={(e) => setMedications(e.target.value || "N/A")}
           placeholder="Enter Medications"
         />
       </div>
@@ -575,7 +575,7 @@ const CreateOrUpdateMedicalRecord = () => {
         <textarea
           id="labReports"
           value={labReports}
-          onChange={(e) => setLabReports(e.target.value)}
+          onChange={(e) => setLabReports(e.target.value || "N/A")}
           placeholder="Enter Lab Reports"
         />
       </div>
@@ -584,7 +584,7 @@ const CreateOrUpdateMedicalRecord = () => {
         <textarea
           id="prescriptions"
           value={prescriptions}
-          onChange={(e) => setPrescriptions(e.target.value)}
+          onChange={(e) => setPrescriptions(e.target.value || "N/A")}
           placeholder="Enter Prescriptions"
         />
       </div>
@@ -593,7 +593,7 @@ const CreateOrUpdateMedicalRecord = () => {
         <textarea
           id="additionalNotes"
           value={additionalNotes}
-          onChange={(e) => setAdditionalNotes(e.target.value)}
+          onChange={(e) => setAdditionalNotes(e.target.value || "N/A")}
           placeholder="Enter Additional Notes"
         />
       </div>

@@ -89,15 +89,15 @@ const UserProfile = ({
     setShowChangePasswordModal(false);
   };
   const handleAllergiesChange = (event) => {
-    setNewAllergies(event.target.value);
+    setNewAllergies(event.target.value || "N/A");
   };
 
   const handleMedicalHistoryChange = (event) => {
-    setNewMedicalHistory(event.target.value);
+    setNewMedicalHistory(event.target.value || "N/A");
   };
 
   const handleCriticalConditionsChange = (event) => {
-    setNewCriticalConditions(event.target.value);
+    setNewCriticalConditions(event.target.value || "N/A");
   };
 
   const fetchMedicalRecords = async () => {
@@ -124,10 +124,6 @@ const UserProfile = ({
   };
 
   const handleUpdateSurveys = () => {
-    if (!newAllergies || !newMedicalHistory || !newCriticalConditions) {
-      notifyError('Allergies, Medical History and Critical Condition are required.');
-      return;
-    }
 
     const formattedDateOfBirth = newDateOfBirth ? new Date(newDateOfBirth).toISOString().split('T')[0] : '';
 
@@ -224,15 +220,15 @@ const UserProfile = ({
       )}
       <div className="profile-info">
         <label>Allergies:</label>
-        <textarea value={newAllergies || 'N/A'} onChange={handleAllergiesChange} disabled={userRole === 'doctor'} />
+        <textarea value={newAllergies || ''} onChange={handleAllergiesChange} disabled={userRole === 'doctor'} />
       </div>
       <div className="profile-info">
         <label>Medical History:</label>
-        <textarea value={newMedicalHistory || 'N/A'} onChange={handleMedicalHistoryChange} disabled={userRole === 'doctor'} />
+        <textarea value={newMedicalHistory || ''} onChange={handleMedicalHistoryChange} disabled={userRole === 'doctor'} />
       </div>
       <div className="profile-info">
         <label>Critical Conditions:</label>
-        <textarea value={newCriticalConditions || 'N/A'} onChange={handleCriticalConditionsChange} disabled={userRole === 'doctor'} />
+        <textarea value={newCriticalConditions || ''} onChange={handleCriticalConditionsChange} disabled={userRole === 'doctor'} />
       </div>
       {userRole ==='user' &&(<button className="profile-a" onClick={handleUpdateSurveys}>Update Survey</button>)}
       <div className="profile-info" style={{marginTop:"10px",flexDirection:"column",display:"flex",  justifyContent:"center",alignItems:"center"}}>
