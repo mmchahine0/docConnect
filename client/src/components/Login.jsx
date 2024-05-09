@@ -1,11 +1,9 @@
 import axios from 'axios';
 import Cookies from 'js-cookie'; // Import js-cookie
 import { useRef, useState, useEffect } from 'react';
-import useAuth from '../context/useAuth';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 const Login = () => {
-  const { setAuth } = useAuth();
   const userRef = useRef();
   const errRef = useRef();
   const navigate = useNavigate();
@@ -42,11 +40,6 @@ const Login = () => {
       localStorage.setItem("jwt", token);
       localStorage.setItem("role", role);
 
-      setAuth((prevAuth) => ({
-        ...prevAuth,
-        token: token,
-        role: role,
-      }));
 
 
       setSuccess(true);

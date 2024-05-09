@@ -14,7 +14,6 @@ const DoctorList = () => {
       .get("http://127.0.0.1:3500/doctor/get")
       .then((response) => {
         setDoctors(response.data.doctors);
-        console.log(response.data.doctors);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);

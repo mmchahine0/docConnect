@@ -30,7 +30,6 @@ const ChooseSickness = () => {
   const fetchDoctorsForSpecialty = async (specialty) => {
     try {
       const response = await axios.get(`http://127.0.0.1:3500/doctor/getspecialty/${specialty}`);
-      console.log(`Doctors for ${specialty}:`, response.data);
       setDoctors(response.data.data); 
       console.log(response.data.data)
   

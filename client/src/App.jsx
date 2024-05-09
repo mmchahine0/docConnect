@@ -18,14 +18,12 @@ import AboutUs from "./pages/aboutUs";
 
 //components
 import Layout from './components/Layout';
-import { AuthProvider } from './context/AuthProvider';
 import RequireAuth from './components/RequireAuth';
 
 function App() {
   return (
     <>
       <BrowserRouter>
-        <AuthProvider>
           <Routes>
             <Route element={<Layout/>}>
             <Route
@@ -91,7 +89,6 @@ function App() {
           </Route>
             </Route>
           </Routes>
-        </AuthProvider>
       </BrowserRouter>
     </>
   );

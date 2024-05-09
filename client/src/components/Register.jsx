@@ -86,9 +86,6 @@ const Register = () => {
                     withCredentials: true, 
                 }
             );
-            console.log(response?.data);
-            console.log(response?.token);
-            console.log(JSON.stringify(response))
             setSuccess(true);
             setFullname('');
             setUsername('');

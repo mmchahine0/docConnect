@@ -29,7 +29,9 @@ const UserProfile = ({
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
   const [userRole, setUserRole] = useState('');
-    
+  const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+  const PASSWORD_ERROR_MESSAGE = "Password must be 8 to 24 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character (!@#$%).";
+
 
   const handleSubmitPassword = async (e) => {
     e.preventDefault();
@@ -38,7 +40,10 @@ const UserProfile = ({
       setMessage('Passwords do not match');
       return;
     }
-
+    if (!validatePassword(newPassword)) {
+      setMessage(PASSWORD_ERROR_MESSAGE);
+      return;
+    }
     try {
       const response = await axios.patch(`http://127.0.0.1:3500/auth/updatePassword`, {
         oldPassword,
@@ -60,6 +65,10 @@ const UserProfile = ({
         setMessage('Something went wrong. Please try again later.');
       }
     }
+  };
+
+  const validatePassword = (password) => {
+    return PASSWORD_REGEX.test(password);
   };
 
   useEffect(() => {
@@ -115,8 +124,8 @@ const UserProfile = ({
   };
 
   const handleUpdateSurveys = () => {
-    if (!newAllergies || !newMedicalHistory) {
-      notifyError('Allergies and Medical History are required.');
+    if (!newAllergies || !newMedicalHistory || !newCriticalConditions) {
+      notifyError('Allergies, Medical History and Critical Condition are required.');
       return;
     }
 
@@ -215,15 +224,15 @@ const UserProfile = ({
       )}
       <div className="profile-info">
         <label>Allergies:</label>
-        <textarea value={newAllergies || ''} onChange={handleAllergiesChange} disabled={userRole === 'doctor'} />
+        <textarea value={newAllergies || 'N/A'} onChange={handleAllergiesChange} disabled={userRole === 'doctor'} />
       </div>
       <div className="profile-info">
         <label>Medical History:</label>
-        <textarea value={newMedicalHistory || ''} onChange={handleMedicalHistoryChange} disabled={userRole === 'doctor'} />
+        <textarea value={newMedicalHistory || 'N/A'} onChange={handleMedicalHistoryChange} disabled={userRole === 'doctor'} />
       </div>
       <div className="profile-info">
         <label>Critical Conditions:</label>
-        <textarea value={newCriticalConditions || ''} onChange={handleCriticalConditionsChange} disabled={userRole === 'doctor'} />
+        <textarea value={newCriticalConditions || 'N/A'} onChange={handleCriticalConditionsChange} disabled={userRole === 'doctor'} />
       </div>
       {userRole ==='user' &&(<button className="profile-a" onClick={handleUpdateSurveys}>Update Survey</button>)}
       <div className="profile-info" style={{marginTop:"10px",flexDirection:"column",display:"flex",  justifyContent:"center",alignItems:"center"}}>
